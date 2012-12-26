@@ -1,0 +1,72 @@
+{% extends "::layout.html.twig" %}
+
+{% block menu %}
+  {% render "LocatorLeaseBundle:Lease:menu" %}
+{% endblock %}
+
+{% block body %}
+        <header>
+          <hgroup>
+            <h1>Lease list</h1>
+          </hgroup>
+          <aside>
+            <ul>
+                <li>
+                    <a href="{{ path('lease_new') }}">
+                        <i class="icon-plus"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('lease') }}">
+                        <i class="icon-list"></i>
+                    </a>
+                </li>
+            </ul>
+          </aside>
+        </header>
+        <div class="main">
+          <table>
+            <thead>
+                <tr>
+                    <th>Entête</th>
+                    <th>Prochaine quittance</th>
+                    <th>Signé le</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td><a href="{{ path('lease_show', { 'id': entity.id }) }}">{{ entity.header }}</a></td>
+                    <td>
+                      {% if entity.quittances.last %}
+                      <span>
+                        {{ entity.quittances.last.dateEnd|printDate(1) }}
+                      </span>
+                      <span class="small muted">{{ entity.quittances.last.dateEnd|timeAgo }}</span>
+                      {% endif %}
+                    </td>
+                    <td>{% if entity.dateStart %}{{ entity.dateStart|date('Y-m-d') }}{% endif %}</td>
+                    <td class="text-center">
+                      <ul class="actions">
+                        <li>
+                          <a href="#">
+                            <i class="icon-user"></i><sub>{{ entity.contacts|length }}</sub>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="{{ path('quittance', { 'lid': entity.id }) }}">
+                            <i class="icon-file"></i><sub>{{ entity.quittances|length }}</sub>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="{{ path('lease_show', { 'id': entity.id }) }}"><i class="icon-eye-open"></i></a>
+                        </li>
+                      </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+      </div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+        <header>
+          <hgroup>
+            <h1>{{ 'QuittanceItem creation'|trans }}</h1>
+          </hgroup>
+          <aside>
+            <ul>
+              <li>
+                <a href="{{ path('quittanceitem') }}"><i class="icon-list"></i></a>
+              </li>
+            </ul>
+          </aside>
+        </header>
+
+        <form class="body form-horizontal" action="{{ path('quittanceitem_create', { 'qid': entityQuittance.id }) }}" method="post" {{ form_enctype(form) }}>
+          <div class="main main-form">
+            {{ form_widget(form) }}
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create</button>
+          </div>
+        </form>
+{% endblock %}

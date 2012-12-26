@@ -1,0 +1,309 @@
+<?php
+
+namespace Locator\LeaseBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Lease
+ *
+ * @ORM\Table(name="lease")
+ * @ORM\Entity
+ */
+class Lease
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Locator\HouseBundle\Entity\House", inversedBy="leases")
+     */
+    private $house;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Locator\LeaseBundle\Entity\Contact", mappedBy="lease")
+     */
+    private $contacts;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Locator\QuittanceBundle\Entity\Quittance", mappedBy="lease")
+     */
+    private $quittances;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="header", type="string", length=100)
+     */
+    private $header;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="day_of_quittance", type="smallint")
+     */
+    private $day_of_quittance;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_created", type="datetime")
+     */
+    private $date_created;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_start", type="date")
+     */
+    private $dateStart;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_end", type="date")
+     */
+    private $dateEnd;
+
+
+    public function __construct() {
+        $this->date_created = new \DateTime();
+        $this->dateStart = new \DateTime();
+        $this->dateEnd = clone $this->dateStart;
+        $this->dateEnd = $this->dateEnd->add(new \DateInterval('P3Y'));
+        $this->day_of_quittance = 1;
+    }
+
+    public function __toString() {
+        return $this->getHeader();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set header
+     *
+     * @param string $header
+     * @return Lease
+     */
+    public function setHeader($header)
+    {
+        $this->header = $header;
+    
+        return $this;
+    }
+
+    /**
+     * Get header
+     *
+     * @return string 
+     */
+    public function getHeader()
+    {
+        return $this->header;
+    }
+
+    /**
+     * Set day_of_quittance
+     *
+     * @param integer $dayOfQuittance
+     * @return Lease
+     */
+    public function setDayOfQuittance($dayOfQuittance)
+    {
+        $this->day_of_quittance = $dayOfQuittance;
+    
+        return $this;
+    }
+
+    /**
+     * Get day_of_quittance
+     *
+     * @return integer 
+     */
+    public function getDayOfQuittance()
+    {
+        return $this->day_of_quittance;
+    }
+
+    /**
+     * Set date_created
+     *
+     * @param \DateTime $dateCreated
+     * @return Lease
+     */
+    public function setDateCreated($dateCreated)
+    {
+        $this->date_created = $dateCreated;
+    
+        return $this;
+    }
+
+    /**
+     * Get date_created
+     *
+     * @return \DateTime 
+     */
+    public function getDateCreated()
+    {
+        return $this->date_created;
+    }
+
+    /**
+     * Set house
+     *
+     * @param \Locator\HouseBundle\Entity\House $house
+     * @return Lease
+     */
+    public function setHouse(\Locator\HouseBundle\Entity\House $house = null)
+    {
+        $this->house = $house;
+    
+        return $this;
+    }
+
+    /**
+     * Get house
+     *
+     * @return \Locator\HouseBundle\Entity\House 
+     */
+    public function getHouse()
+    {
+        return $this->house;
+    }
+
+    /**
+     * Add contacts
+     *
+     * @param \Locator\LeaseBundle\Entity\Contact $contacts
+     * @return Lease
+     */
+    public function addContact(\Locator\LeaseBundle\Entity\Contact $contacts)
+    {
+        $this->contacts[] = $contacts;
+    
+        return $this;
+    }
+
+    /**
+     * Remove contacts
+     *
+     * @param \Locator\LeaseBundle\Entity\Contact $contacts
+     */
+    public function removeContact(\Locator\LeaseBundle\Entity\Contact $contacts)
+    {
+        $this->contacts->removeElement($contacts);
+    }
+
+    /**
+     * Get contacts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getContacts($type = null)
+    {
+        if( is_null($type) )
+            return $this->contacts;
+
+        $contacts = $this->contacts; //new \Doctrine\Common\Collections\Collection();
+
+        foreach( $this->contacts as $contact )
+            if( $contact->getType() != $type )
+                $contacts->removeElement($contact);
+
+        return $contacts;
+    }
+
+    /**
+     * Set dateStart
+     *
+     * @param \DateTime $dateStart
+     * @return Lease
+     */
+    public function setDateStart($dateStart)
+    {
+        $this->dateStart = $dateStart;
+    
+        return $this;
+    }
+
+    /**
+     * Get dateStart
+     *
+     * @return \DateTime 
+     */
+    public function getDateStart()
+    {
+        return $this->dateStart;
+    }
+
+    /**
+     * Set dateEnd
+     *
+     * @param \DateTime $dateEnd
+     * @return Lease
+     */
+    public function setDateEnd($dateEnd)
+    {
+        $this->dateEnd = $dateEnd;
+    
+        return $this;
+    }
+
+    /**
+     * Get dateEnd
+     *
+     * @return \DateTime 
+     */
+    public function getDateEnd()
+    {
+        return $this->dateEnd;
+    }
+
+    /**
+     * Add quittances
+     *
+     * @param \Locator\QuittanceBundle\Entity\Quittance $quittances
+     * @return Lease
+     */
+    public function addQuittance(\Locator\QuittanceBundle\Entity\Quittance $quittances)
+    {
+        $this->quittances[] = $quittances;
+    
+        return $this;
+    }
+
+    /**
+     * Remove quittances
+     *
+     * @param \Locator\QuittanceBundle\Entity\Quittance $quittances
+     */
+    public function removeQuittance(\Locator\QuittanceBundle\Entity\Quittance $quittances)
+    {
+        $this->quittances->removeElement($quittances);
+    }
+
+    /**
+     * Get quittances
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getQuittances()
+    {
+        return $this->quittances;
+    }
+}

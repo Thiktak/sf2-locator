@@ -1,0 +1,22 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+        <header>
+          <hgroup>
+            <h1>{{ 'ContactLease creation'|trans }}</h1>
+          </hgroup>
+          <aside>
+            <ul>
+            </ul>
+          </aside>
+        </header>
+
+        <form class="body form-horizontal" action="{{ path('lease_contact_create') }}" method="post" {{ form_enctype(form) }}>
+          <div class="main main-form">
+            {{ form_widget(form) }}
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create</button>
+          </div>
+        </form>
+{% endblock %}

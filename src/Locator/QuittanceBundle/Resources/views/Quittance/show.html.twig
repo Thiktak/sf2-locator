@@ -1,0 +1,94 @@
+{% extends "::layout.html.twig" %}
+
+{% block menu %}
+  {% render "LocatorLeaseBundle:Lease:menu" %}
+{% endblock %}
+
+{% block body %}
+        <header>
+          <hgroup>
+            <h1>{{ 'Quittance'|trans }} n°{{ entity.number }} - {{ entity.lease.header }}</h1>
+          </hgroup>
+          <aside>
+            <ul>
+              <li><a href="{{ path('quittance_new', {lid: entity.lease.id}) }}"><i class="icon-plus"></i></a></li>
+              <li><a href="{{ path('quittance_edit', {id: entity.id}) }}"><i class="icon-edit"></i></a></li>
+            </ul>
+          </aside>
+        </header>
+
+        <div class="main">
+
+          <span class="pull-right">Avis d'échéance/Quittance n°{{ entity.number }}</span>
+
+          <br class="clearfix" />
+          <br />
+
+          {% if entity.total == 0 and entity.tags(3)|length == 0 %}
+          <div class="alert alert-info alert-block">
+            Pensez à marquer la quittance comme 
+              <a href="{{ path('quittance_tag_add', {id: entity.id, tid: 3}) }}" class="label label-warning">
+                <i class="icon-gift icon-white"></i> Payé
+              </a>
+          </div>
+          {% endif %}
+
+          <div class="container-fluid">
+            <div class="row-fluid">
+              <div class="span6 well">
+                <dl class="dl-horizontal">
+                  <dt>Quittance n°</dt>
+                  <dd>{{ entity.number }}</dd>
+                  
+                  <dt>Datée du</dt>
+                  <dd>{{ entity.dateStart|printDate(1) }}</dd>
+
+                  <dt>Au</dt>
+                  <dd>{{ entity.dateEnd|printDate(1) }}</dd>
+                </dl>
+                <div class="text-center">
+                  {% for itemTag in tags %}
+                    {% for tag in entity.tags(itemTag) %}
+                      <a href="{{ path('quittance_tag_remove', {id: entity.id, tid: itemTag.id}) }}" class="label label-success">
+                        <i class="icon-{{ tag.icon }}"></i> {{ tag }}
+                      </a>
+                    {% else %}
+                      <a href="{{ path('quittance_tag_add', {id: entity.id, tid: itemTag.id}) }}" class="label" style="opacity: .5">
+                        <i class="icon-{{ itemTag.icon }} icon-white"></i> {{ itemTag }}
+                      </a>
+                    {% endfor %}
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="span6 well">
+                <address>
+                  <strong>{{ entity.lease.header }}</strong><br />
+                  {{ entity.lease.house.address|nl2br|replace({'–': '<br />'})|raw }}
+                </address>
+              </div>
+            </div>
+          </div>
+
+          {% render "LocatorQuittanceBundle:QuittanceItem:quittance" with {lease: entity.id} %}
+
+          <br />
+
+          <div class="well">
+            <strong>Clauses :</strong> {{ entity.clauses|nl2br }}
+          </div>
+
+          <br />
+
+          <div class="text-center">
+            <a href="" class="btn {{ entity.total ? 'btn-primary' : 'disabled' }}">
+              <i class="icon-print"></i> Avis d'échéance <em class="muted">{{ entity.total }}€</em>
+            </a>
+            <a href="" class="btn btn {{ entity.total ? 'disabled' : 'btn-primary' }}" style="position: relative">
+              <i class="icon-print"></i> Quittance
+            </a>
+          </div>
+
+
+        </div>
+
+{% endblock %}

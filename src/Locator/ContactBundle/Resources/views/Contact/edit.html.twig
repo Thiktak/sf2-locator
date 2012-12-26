@@ -1,0 +1,38 @@
+{% extends "::layout.html.twig" %}
+
+{% block menu %}
+  {% render "LocatorContactBundle:Contact:menu" %}
+{% endblock %}
+
+{% block body %}
+        <header>
+          <hgroup>
+            <h1>{{ 'Contact edit'|trans }}</h1>
+            <h2>{{ entity }}</h2>
+          </hgroup>
+          <aside>
+            <ul>
+                <li>
+                    <a href="{{ path('contact') }}">
+                        Back to the list
+                    </a>
+                </li>
+                <!-- 
+                <form action="{{ path('contact_delete', { 'id': entity.id }) }}" method="post">
+                    {{ form_widget(delete_form) }}
+                    <button type="submit">Delete</button>
+                </form>
+                -->
+            </ul>
+          </aside>
+        </header>
+
+        <form class="body form-horizontal" action="{{ path('contact_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+          <div class="main main-form">
+            {{ form_widget(edit_form) }}
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Edit</button>
+          </div>
+        </form>
+{% endblock %}

@@ -1,0 +1,146 @@
+{% extends "::layout.html.twig" %}
+
+{% block menu %}
+  {% render "LocatorLeaseBundle:Lease:menu" %}
+{% endblock %}
+
+{% block body %}
+        <header>
+          <hgroup>
+            <h1>{{ 'Quittance creation'|trans }}</h1>
+          </hgroup>
+          <aside>
+            <ul>
+              <li>
+                <a href="{{ path('quittance', {lid: entity.lease.id}) }}"><i class="icon-list"></i></a>
+              </li>
+            </ul>
+          </aside>
+        </header>
+
+        <form class="body form-horizontal" action="{{ path('quittance_create', {lid: entity.lease.id}) }}" method="post" {{ form_enctype(form) }}>
+          <div class="main main-form container-fluid">
+            <div class="row-fluid">
+              <div class="well span4 pull-right">
+                {{ entity.lease }}<br />
+                {{ entity.lease.house }}
+              </div>
+              <div>
+                {{ form_errors(form) }}
+
+                {{ form_row(form.number) }}
+                {{ form_row(form.dateStart) }}
+                {{ form_row(form.dateEnd) }}
+
+                <br />
+                <br />
+
+                {% if lastQuittance %}
+                <div class="alert alert-block">
+                  Cette quittance sera créée avec les paramètres de la quittance <em>N-1</em> (n°{{ lastQuittance.number }})
+                  datée du {{ lastQuittance.dateStart|printDate(1) }} au {{ lastQuittance.dateEnd|printDate(1) }}
+                  
+                </div>
+                {% endif %}
+
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Intitulé</th>
+                      <th class="text-right span2">Prix</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% set total = 0 %}
+                    {% if lastQuittance %}
+                    {% for item in lastQuittance.items(false) %}
+                    {% set total = total + item.price %}
+                    <tr>
+                      <td>{{ item.header }}</td>
+                      <td class="text-right">{{ '%.2f'|format(item.price) }} €</td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                  </tbody>
+                  <tfoot>
+                    <th colspan="2">
+                      <div class="text-right">Total : {{ '%.2f'|format(total) }} €</div>
+                    </th>
+                  </tfoot>
+                </table>
+
+                {{ form_row(form.clauses, {attr: {class: 'input-block-level'}}) }}
+
+                {{ form_rest(form) }}
+                
+                <br />
+
+              </div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create</button>
+          </div>
+        </form>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+      .form-div-table-aspect div { display: inline-block; }
+      .form-div-table-aspect div label { font-size: .5em; }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+      // Get the div that holds the collection of items
+      var collectionHolder = $('#post_items');
+
+      // setup an "add a tag" link
+      var $addItemLink = $('<a href="#" class="add_item_link">Add a item</a>');
+      var $newLinkLi = $('<li></li>').append($addItemLink);
+
+      jQuery(document).ready(function() {
+          // add the "add a tag" anchor and li to the items ul
+          collectionHolder.append($newLinkLi);
+
+          // a[data-target="post_items"]
+          $('a.itemAdd').on('click', function(e) {
+              e.preventDefault(); // prevent the link from creating a "#" on the URL
+              addItemForm(collectionHolder, $newLinkLi); // add a new tag form (see next code block)
+          });
+          $('a.itemRemove').on('click', function(e) {
+              e.preventDefault(); // prevent the link from creating a "#" on the URL
+              $(this).parents('tr').remove();
+          });
+      });
+
+      function addItemForm(collectionHolder, $newLinkLi) {
+        // Get the data-prototype explained earlier
+        var prototype = collectionHolder.attr('data-prototype');
+
+        // Replace '$$name$$' in the prototype's HTML to
+        // instead be a number based on the current collection's length.
+        var newForm = prototype.replace(/__name__/g, collectionHolder.find('table tr').children().length);
+
+        // Display the form in the page in an li, before the "Add a tag" link li
+
+        var newLine  = '<tr>';
+        
+        $('div', newForm).each(function() {
+          a = $(this);
+          a.find('label').remove(); // On enlève le <label />
+          newLine += '<td>' + a.html() + '</td>';
+        });
+
+        newLine += '<td><a href="jaascript: void(0)"><i class="icon-remove itemRemove"></i></a></td>';
+        newLine += '</tr>';
+        
+        collectionHolder.find('table').append(newLine);
+      }
+
+
+    </script>
+{% endblock %}

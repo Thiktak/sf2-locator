@@ -1,0 +1,50 @@
+{% extends "::layout.html.twig" %}
+
+{% block menu %}
+  {% render "LocatorHouseBundle:House:menu" %}
+{% endblock %}
+
+{% block body %}
+        <header>
+          <hgroup>
+            <h1>{{ 'House list'|trans }}</h1>
+          </hgroup>
+          <aside>
+            <ul>
+                <li>
+                    <a href="{{ path('house_new') }}">
+                        <i class="icon-plus"></i>
+                    </a>
+                </li>
+            </ul>
+          </aside>
+        </header>
+        <div class="main">
+          <table class="records_list">
+              <thead>
+                  <tr>
+                      <th>Id</th>
+                      <th>Header</th>
+                      <th>Address</th>
+                      <th class="span1 text-center">Actions</th>
+                  </tr>
+              </thead>
+              <tbody>
+              {% for entity in entities %}
+                  <tr>
+                      <td><a href="{{ path('house_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                      <td>{{ entity.header }}</td>
+                      <td>{{ entity.address }}</td>
+                      <td>
+                          <ul class="actions">
+                            <li>
+                              <a href="{{ path('house_show', { 'id': entity.id }) }}"><i class="icon-eye-open"></i></a>
+                            </li>
+                          </ul>
+                      </td>
+                  </tr>
+              {% endfor %}
+              </tbody>
+          </table>
+        </div>
+{% endblock %}

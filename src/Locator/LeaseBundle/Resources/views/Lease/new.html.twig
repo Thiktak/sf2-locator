@@ -1,0 +1,25 @@
+{% extends "::layout.html.twig" %}
+
+{% block menu %}
+  {% render "LocatorLeaseBundle:Lease:menu" %}
+{% endblock %}
+
+{% block body %}
+        <header>
+          <hgroup>
+            <h1>Lease creation</h1>
+          </hgroup>
+          <aside>
+          </aside>
+        </header>
+
+        <form class="body form-horizontal" action="{{ path('lease_create') }}" method="post" {{ form_enctype(form) }}>
+          <div class="main main-form">
+            {{ form_widget(form) }}
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create</button>
+          </div>
+        </form>
+
+ {% endblock %}

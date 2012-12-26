@@ -1,0 +1,25 @@
+{% extends "::layout.html.twig" %}
+
+{% block menu %}
+  {% render "LocatorHouseBundle:House:menu" %}
+{% endblock %}
+
+{% block body %}
+        <header>
+          <hgroup>
+            <h1>{{ 'Quittance creation'|trans }}</h1>
+          </hgroup>
+          <aside>
+            <ul>
+            </ul>
+          </aside>
+        </header>
+        <div class="main">
+          Selectionnez un bail :
+          <ul clas="body">
+            {% for entity in entities %}
+            <li><a href="{{ path('quittance_new_lease', {lid: entity.id}) }}">{{ entity }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+{% endblock %}

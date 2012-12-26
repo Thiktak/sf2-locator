@@ -1,0 +1,319 @@
+<?php
+
+namespace Locator\QuittanceBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Quittance
+ *
+ * @ORM\Table(name="quittance")
+ * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Locator\QuittanceBundle\Entity\QuittanceRepository")
+ */
+class Quittance
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Locator\LeaseBundle\Entity\Lease", inversedBy="quittances")
+     */
+    private $lease;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Locator\QuittanceBundle\Entity\QuittanceItem", mappedBy="quittance")
+     */
+    private $items;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Locator\QuittanceBundle\Entity\Tags")
+     */
+    private $tags;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="number", type="integer")
+     */
+    private $number;
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="clauses", type="text", nullable=true)
+     */
+    private $clauses;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateCreated", type="datetime")
+     */
+    private $dateCreated;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateStart", type="datetime")
+     */
+    private $dateStart;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateEnd", type="datetime")
+     */
+    private $dateEnd;
+
+
+    public function getTotal($withTenant = true)
+    {
+        $total = 0;
+
+        foreach( $this->items as $item )
+            $total += ($item->isTenant() ? -1 * $withTenant : 1) * $item->getPrice();
+
+        return $total;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set dateCreated
+     *
+     * @param \DateTime $dateCreated
+     * @return Quittance
+     */
+    public function setDateCreated($dateCreated)
+    {
+        $this->dateCreated = $dateCreated;
+    
+        return $this;
+    }
+
+    /**
+     * Get dateCreated
+     *
+     * @return \DateTime 
+     */
+    public function getDateCreated()
+    {
+        return $this->dateCreated;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->items = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->dateCreated = new \DateTime();
+    }
+    
+    /**
+     * Set lease
+     *
+     * @param \Locator\LeaseBundle\Entity\Lease $lease
+     * @return Quittance
+     */
+    public function setLease(\Locator\LeaseBundle\Entity\Lease $lease = null)
+    {
+        $this->lease = $lease;
+    
+        return $this;
+    }
+
+    /**
+     * Get lease
+     *
+     * @return \Locator\LeaseBundle\Entity\Lease 
+     */
+    public function getLease()
+    {
+        return $this->lease;
+    }
+
+    /**
+     * Add items
+     *
+     * @param \Locator\QuittanceBundle\Entity\QuittanceItem $items
+     * @return Quittance
+     */
+    public function addItem(\Locator\QuittanceBundle\Entity\QuittanceItem $items)
+    {
+        $this->items[] = $items;
+    
+        return $this;
+    }
+
+    /**
+     * Remove items
+     *
+     * @param \Locator\QuittanceBundle\Entity\QuittanceItem $items
+     */
+    public function removeItem(\Locator\QuittanceBundle\Entity\QuittanceItem $items)
+    {
+        $this->items->removeElement($items);
+    }
+
+    /**
+     * Get items
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getItems($isTenant = null)
+    {
+        $t = clone $this->items;
+        if( !is_null($isTenant) )
+            foreach( $t as $item )
+                if( $item->isTenant() != $isTenant )
+                    $t->removeElement($item);
+
+        return $t;
+    }
+
+    /**
+     * Set dateStart
+     *
+     * @param \DateTime $dateStart
+     * @return Quittance
+     */
+    public function setDateStart($dateStart)
+    {
+        $this->dateStart = $dateStart;
+    
+        return $this;
+    }
+
+    /**
+     * Get dateStart
+     *
+     * @return \DateTime 
+     */
+    public function getDateStart()
+    {
+        return $this->dateStart;
+    }
+
+    /**
+     * Set dateEnd
+     *
+     * @param \DateTime $dateEnd
+     * @return Quittance
+     */
+    public function setDateEnd($dateEnd)
+    {
+        $this->dateEnd = $dateEnd;
+    
+        return $this;
+    }
+
+    /**
+     * Get dateEnd
+     *
+     * @return \DateTime 
+     */
+    public function getDateEnd()
+    {
+        return $this->dateEnd;
+    }
+
+    /**
+     * Set number
+     *
+     * @param integer $number
+     * @return Quittance
+     */
+    public function setNumber($number)
+    {
+        $this->number = $number;
+    
+        return $this;
+    }
+
+    /**
+     * Get number
+     *
+     * @return integer 
+     */
+    public function getNumber()
+    {
+        return $this->number;
+    }
+
+    /**
+     * Set clauses
+     *
+     * @param string $clauses
+     * @return Quittance
+     */
+    public function setClauses($clauses)
+    {
+        $this->clauses = $clauses;
+    
+        return $this;
+    }
+
+    /**
+     * Get clauses
+     *
+     * @return string 
+     */
+    public function getClauses()
+    {
+        return $this->clauses;
+    }
+
+    /**
+     * Add tags
+     *
+     * @param \Locator\QuittanceBundle\Entity\Tags $tags
+     * @return Quittance
+     */
+    public function addTag(\Locator\QuittanceBundle\Entity\Tags $tags)
+    {
+        $this->tags[] = $tags;
+    
+        return $this;
+    }
+
+    /**
+     * Remove tags
+     *
+     * @param \Locator\QuittanceBundle\Entity\Tags $tags
+     */
+    public function removeTag(\Locator\QuittanceBundle\Entity\Tags $tags)
+    {
+        $this->tags->removeElement($tags);
+    }
+
+    /**
+     * Get tags
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTags($tag = null)
+    {
+        $t = clone $this->tags;
+        if( !is_null($tag) )
+            foreach( $t as $item )
+                if( (is_numeric($tag) && $tag != $item->getId()) || (!is_numeric($tag) && $tag != $item) )
+                    $t->removeElement($item);
+
+        return $t;
+    }
+}

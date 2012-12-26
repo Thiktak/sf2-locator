@@ -1,0 +1,26 @@
+{% extends "::layout.html.twig" %}
+
+{% block menu %}
+  {% render "LocatorLeaseBundle:Lease:menu" %}
+{% endblock %}
+
+{% block body %}
+        <header>
+          <hgroup>
+            <h1>Lease edit</h1>
+            <h2>{{ entity }}</h2>
+          </hgroup>
+          <aside>
+          </aside>
+        </header>
+
+        <form class="body form-horizontal" action="{{ path('lease_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+          <div class="main main-form">
+            {{ form_widget(edit_form) }}
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create</button>
+          </div>
+        </form>
+
+ {% endblock %}

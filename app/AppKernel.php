@@ -19,6 +19,13 @@ class AppKernel extends Kernel
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
+            new Thiktak\CoreBundle\ThiktakCoreBundle(),
+            new Locator\ContactBundle\LocatorContactBundle(),
+            new Locator\LeaseBundle\LocatorLeaseBundle(),
+            new Locator\HouseBundle\LocatorHouseBundle(),
+            new Locator\MainBundle\LocatorMainBundle(),
+            new Locator\QuittanceBundle\LocatorQuittanceBundle(),
+            new Locator\AccountBundle\LocatorAccountBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

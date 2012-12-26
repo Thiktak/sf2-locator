@@ -1,0 +1,9 @@
+          <ul>
+            <li><a href="{{ path('lease') }}"><i class="icon-list"></i> Tous les Baux</a></li>
+            <li><a href="{{ path('lease_new') }}"><i class="icon-plus"></i> Ajouter un Bail</a></li>
+          </ul>
+          <ul>
+            {% for lease in leases %}
+            <li><a href="{{ path('lease_show', {id: lease.id}) }}">{{ lease }}</a></li>
+            {% endfor %}
+          </ul>

@@ -1,0 +1,60 @@
+{% extends "::layout.html.twig" %}
+
+{% block menu %}
+  {% render "LocatorContactBundle:Contact:menu" %}
+{% endblock %}
+
+{% block body %}
+        <header>
+          <hgroup>
+            <h1>Contact list</h1>
+          </hgroup>
+          <aside>
+            <ul>
+                <li>
+                    <a href="{{ path('contact_new') }}">
+                        <i class="icon-plus"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('contact') }}">
+                        <i class="icon-list"></i>
+                    </a>
+                </li>
+            </ul>
+          </aside>
+        </header>
+        <div class="main">
+          <table>
+              <thead>
+                      <th>Nom Prénom</th>
+                      <th class="span2 text-center">Actions</th>
+                  </tr>
+              </thead>
+              <tbody>
+              {% for entity in entities %}
+                  <tr>
+                      <td>
+                        <a href="{{ path('contact_show', { 'id': entity.id }) }}">
+                         {{ entity }}
+                        </a>
+                      </td>
+                      <td class="text-center">
+                        <ul class="actions">
+                          <li>
+                            <a href="#"><i class="icon-home"></i><sub>1</sub></a>
+                          </li>
+                          <li>
+                            <a href="{{ path('contact_show', { 'id': entity.id }) }}"><i class="icon-eye-open"></i></a>
+                          </li>
+                          <li>
+                            <a href="{{ path('contact_edit', { 'id': entity.id }) }}"><i class="icon-edit"></i></a>
+                          </li>
+                        </ul>
+                      </td>
+                  </tr>
+              {% endfor %}
+              </tbody>
+          </table>
+        </div>
+{% endblock %}

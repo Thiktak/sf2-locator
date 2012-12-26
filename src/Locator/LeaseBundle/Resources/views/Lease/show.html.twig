@@ -1,0 +1,126 @@
+{% extends "::layout.html.twig" %}
+
+{% block menu %}
+  {% render "LocatorLeaseBundle:Lease:menu" %}
+{% endblock %}
+
+{% block body %}
+        <header>
+          <hgroup>
+            <h1>Lease</h1>
+            <h2><span class="muted">#{{ entity.id }}</span> {{ entity }}</h2>
+          </hgroup>
+          <aside>
+            <ul>
+                <li>
+                    <a href="{{ path('quittance', {lid: entity.id}) }}">
+                        Les quittances
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('lease_doc_lease', { 'id': entity.id }) }}">
+                        Bail
+                    </a>
+                </li>
+                <li>
+                  <a href="{{ path('lease_edit', { 'id': entity.id }) }}">
+                      <i class="icon-edit"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="{{ path('lease_show', { 'id': entity.id }) }}">
+                      <i class="icon-list"></i>
+                  </a>
+                </li>
+            </ul>
+          </aside>
+        </header>
+        <div class="main">
+          <div class="container-fluid">
+            <div class="row-fluid">
+              <div class="span6">
+                <dl class="dl-horizontal">
+                  <!--<dt>Day_of_quittance</dt>
+                  <dd>{{ entity.dayofquittance }}</dd>-->
+                  <dt>Crée le</dt>
+                  <dd>{{ entity.datecreated|printDate(1) }}</dd>
+                  <dt>Début le</dt>
+                  <dd>{{ entity.dateStart|printDate(1) }} <span class="muted small">({{ entity.dateStart|timeAgo }})</span></dd>
+                  <dt>Fin le</dt>
+                  <dd>{{ entity.dateEnd|printDate(1) }} <span class="muted small">({{ entity.dateEnd|timeAgo }})</span></dd>
+                </dl>
+                <div class="text-center">
+                  <span class="badge badge-info">{{ entity.quittances|length }} quittances</span>
+                  <span class="badge badge-info">{{ '%.2f'|format(total) }} €</span>
+                </div>
+              </div>
+              <div class="offset1 span5">
+                <strong>Les contacts</strong> <a href="{{ path('lease_contact_new', { 'lease': entity.id }) }}"><i class="icon-plus"></i></a>
+                <ul class="body">
+                  {% for contact in entity.contacts %}
+                  <li><a href="{{ path('contact_show', {id: contact.id}) }}">{{ contact }}</a> ({{ contact.type }})</li>
+                  {% endfor %}
+                </ul>
+
+                <br />
+
+                <strong>La maison</strong>
+                <div>
+                  <a href="{{ path('house_show', {id: entity.house.id}) }}">{{ entity.house }}</a>
+                  <p class="small muted">({{ entity.house.address }})</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <br class="clearfix"/>
+          <br />
+
+          <div class="text-center">
+            {% if lastQuittance %}
+            <a href="{{ path('quittance_show', {id: lastQuittance.id}) }}" class="btn btn-success" style="width: 200px">
+              <i class="icon-white icon-eye-open"></i><br />
+              Dernière quittance n°{{ lastQuittance.number }}
+            </a>
+            {% endif %}
+            <a href="{{ path('quittance_new', {lid: entity.id}) }}" class="btn" style="width: 200px">
+              <i class="icon-plus"></i><br />
+              Nouvelle Quittance
+            </a>
+          </div>
+
+          <!--<br />
+
+          <article class="body">
+            <header>
+              <hgroup>
+                <h1>Quittances</h1>
+              <hgroup>
+            </header>
+            <table class="record_properties">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th class="span2">Montant</th>
+                  <th class="span1">Etat</th>
+                  <th class="span1 text-center">Actions</th>
+                </tr>   
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2012 - 01</td>
+                  <td>200€</td>
+                  <td>Payé</td>
+                  <td>
+                    <ul class="actions">
+                      <li><i class="icon-eye-open"></i></li>
+                      <li><a href="#"><i class="icon-ok-sign"></i></a></li>
+                      <li><a href="#"><i class="icon-folder-close"></i></a></li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </article>-->
+        </div>
+{% endblock %}

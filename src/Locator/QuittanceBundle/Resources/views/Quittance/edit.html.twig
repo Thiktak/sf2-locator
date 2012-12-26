@@ -1,0 +1,29 @@
+{% extends "::layout.html.twig" %}
+
+{% block menu %}
+  {% render "LocatorLeaseBundle:Lease:menu" %}
+{% endblock %}
+
+{% block body %}
+        <header>
+          <hgroup>
+            <h1>{{ 'Quittance edit'|trans }}</h1>
+          </hgroup>
+          <aside>
+            <ul>
+              <li>
+                <a href="{{ path('quittance') }}"><i class="icon-list"></i></a>
+              </li>
+            </ul>
+          </aside>
+        </header>
+
+        <form class="body form-horizontal" action="{{ path('quittance_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+          <div class="main main-form container-fluid">
+            {{ form_widget(edit_form)}}
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Edit</button>
+          </div>
+        </form>
+{% endblock %}

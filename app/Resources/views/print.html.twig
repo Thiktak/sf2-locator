@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Site name{% endblock %}</title>
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="{{ asset('bundles/thiktakcore/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/thiktakcore/css/bootstrap-responsive.min.css') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <style>
+      body { padding: 0; margin: 0; background-color: lightblue; }
+      body dl dt { font-weight: normal; }
+      /*.main-document * { color: inherit; font-size: inherit; background: none; border: none; padding: none; margin: none; line-height: 2em; font-weight: normal; }*/
+      .main-document section { width: 19cm; min-height: 26cm; border: 1px solid lightgray; background-color: white; margin: 1em auto; padding: 1cm; text-align: justify; font-size: 12px; }
+      .main-document section { page-break-inside: avoid; page-break-after: auto; }
+
+      .main-document section > h1 { font-size: 1cm; text-align: center; color: #379B69; }
+      .main-document section > h2 { font-size: .25cm; text-align: center; color: black; line-height: .5cm; }
+
+      .main-document article { margin: 1cm 0; border: 4px solid #379B69; padding: 1em; background: none; }
+      .main-document article header h1 { font-size: .5cm; text-transform: uppercase; }
+      .main-document article div h1 { font-size: 1em; font-weight: bold; padding-bottom: 3px; line-height: 1em; border-bottom: 1px solid #379B69; display: inline-block; }
+      .main-document p { margin-left: 10px; margin-right: 10px; }
+      .main-document p.middle { margin: .5cm; font-weight: bold; text-align: center; }
+
+      .main-document .data { font-weight: bold; }
+
+      /*.inline-document br.page-break { page-break-before: always; }*/
+      .main-document hr.page-break { height: .5cm; margin: 1cm -1cm; background-color: lightblue; }
+
+      .text-right { text-align: right; }
+      .text-center { text-align: center; }
+      .uppercase { text-transform: uppercase; }
+      .strong { font-weight: bold; font-size: 1.25em; }
+
+      .w1 { width: 100%; }
+      .w1-3 { width: 33.33%; }
+      
+    </style>
+
+    <style media="print">
+      @page {
+        size: auto;
+      }
+      body { background: none; padding: 0; margin: 0; }
+      .main-document section { border: none; }
+    </style>
+    {% block stylesheets %}{% endblock %}
+  </head>
+  <body>
+    <section class="main-document">
+      {% block base_body %}{{ block('body') }}{% endblock %}
+    </section>
+  </body>
+</html>

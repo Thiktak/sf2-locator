@@ -1,5 +1,5 @@
 {
-    "hash": "84bcc4d01bf8d7cd8ce7d6f524ca5e81",
+    "hash": "77d60238e6e9e30c7034651c57addbb7",
     "packages": [
         {
             "name": "doctrine/common",
@@ -1120,7 +1120,8 @@
         },
         {
             "name": "thiktak/core-bundle",
-            "version": "dev-master",
+            "version": "master",
+            "target-dir": "Thiktak/CoreBundle/",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Thiktak/CoreBundle.git",
@@ -1128,7 +1129,12 @@
             },
             "type": "library",
             "installation-source": "source",
-            "time": "2012-12-24 09:29:58"
+            "autoload": {
+                "psr-0": {
+                    "Thiktak\\CoreBundle": ""
+                }
+            },
+            "time": "2012-12-26 00:24:18"
         },
         {
             "name": "twig/extensions",

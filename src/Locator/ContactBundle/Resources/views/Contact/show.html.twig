@@ -1,0 +1,55 @@
+{% extends "::layout.html.twig" %}
+
+{% block menu %}
+  {% render "LocatorContactBundle:Contact:menu" %}
+{% endblock %}
+
+{% block body %}
+        <header>
+          <hgroup>
+            <h1>{{ 'Contact'|trans }}</h1>
+            <h2>{{ entity }}</h2>
+          </hgroup>
+          <aside>
+            <ul>
+                <li>
+                    <a href="{{ path('contact') }}">
+                        Back to the list
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('contact_edit', { 'id': entity.id }) }}">
+                        <i class="icon-edit"></i>
+                    </a>
+                </li>
+            </ul>
+          </aside>
+        </header>
+
+        <div class="main">
+          <table class="body">
+              <tbody>
+                  <tr>
+                      <th>Id</th>
+                      <td>{{ entity.id }}</td>
+                  </tr>
+                  <tr>
+                      <th>Fname</th>
+                      <td>{{ entity.fname }}</td>
+                  </tr>
+                  <tr>
+                      <th>Lname</th>
+                      <td>{{ entity.lname }}</td>
+                  </tr>
+                  <tr>
+                      <th>Description</th>
+                      <td>{{ entity.description }}</td>
+                  </tr>
+                  <tr>
+                      <th>Date_created</th>
+                      <td>{{ entity.datecreated|date('Y-m-d H:i:s') }}</td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>
+{% endblock %}

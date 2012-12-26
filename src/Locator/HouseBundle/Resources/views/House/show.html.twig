@@ -1,0 +1,80 @@
+{% extends "::layout.html.twig" %}
+
+{% block menu %}
+  {% render "LocatorHouseBundle:House:menu" %}
+{% endblock %}
+
+{% block body %}
+        <header>
+          <hgroup>
+            <h1>{{ 'House'|trans }}</h1>
+            <h2>{{ entity }}</h2>
+          </hgroup>
+          <aside>
+            <ul>
+                <li>
+                  <a href="{{ path('house_edit', { 'id': entity.id }) }}"><i class="icon-edit"></i></a>
+                </li>
+                <li>
+                  <a href="{{ path('house') }}"><i class="icon-list"></i></a>
+                </li>
+            </ul>
+          </aside>
+        </header>
+        <div class="main">
+          <dl class="dl-horizontal">
+            <dt>Id</dt>
+            <dd>{{ entity.id }}</dd>
+
+            <dt>Header</dt>
+            <dd>{{ entity.header }}</dd>
+
+            <dt>Address</dt>
+            <dd>{{ entity.address }}</dd>
+
+            <dt>Description</dt>
+            <dd>{{ entity.description }}</dd>
+
+            <dt>Surface</dt>
+            <dd>{{ entity.surface }}</dd>
+          </dl>
+
+          <br />
+
+
+          <div class="tabbable tabs-left well">
+            <h6>Les pièces de la maison</h6>
+
+            <ul class="nav nav-tabs">
+            {% for key, room in entity.rooms %}
+              <li><a href="#tab{{ key }}" data-toggle="tab">{{ room }}</a></li>
+            {% endfor %}
+            </ul>
+            
+            <div class="tab-content">
+            {% for key, room in entity.rooms %}
+              <div class="tab-pane" id="tab{{ key }}">
+                <table class="table-bordered">
+                  <thead>
+                    <tr>
+                      <th class="span2 text-center">Equipement</th>
+                      <th class="span1 text-center">Etat</th>
+                      <th>Observations</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for object in room.objects %}
+                    <tr>
+                      <td class="text-right">{{ object }}&nbsp;</td>
+                      <td class="text-center">N</td>
+                      <td>...</td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            {% endfor %}
+            </div>
+          </div>
+        </div>
+{% endblock %}

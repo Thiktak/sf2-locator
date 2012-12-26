@@ -40,13 +40,18 @@
             "type": "package",
             "package": {
                 "name": "thiktak/core-bundle",
-                "version": "dev-master",
+                "version": "master",
                 "source": {
                         "url": "https://github.com/Thiktak/CoreBundle.git",
                         "type": "git",
                         "reference": "master"
-                }
+                },
+                "autoload": {
+                    "psr-0": { "Thiktak\\CoreBundle": "" }
+                },
+                "target-dir": "Thiktak/CoreBundle/"
             }
+            
         }
     ],
     "extra": {

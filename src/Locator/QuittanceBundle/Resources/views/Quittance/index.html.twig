@@ -1,0 +1,109 @@
+{% extends "::layout.html.twig" %}
+
+{% block menu %}
+  {% render "LocatorLeaseBundle:Lease:menu" %}
+{% endblock %}
+
+{% block body %}
+        <header>
+          <hgroup>
+            <h1>{{ 'Quittance list'|trans }}</h1>
+          </hgroup>
+          <aside>
+            <ul>
+                <li>
+                    <a href="{{ path('quittance_new', {lid: lid}) }}">
+                      <i class="icon-plus"></i> Quittance
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('quittance', {lid: lid}) }}">
+                        Les quittances
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('lease_doc_lease', { 'id': lid }) }}">
+                        Bail
+                    </a>
+                </li>
+                <li>
+                  <a href="{{ path('lease_edit', { 'id': lid }) }}">
+                      <i class="icon-edit"></i>
+                  </a>
+                </li>
+                <li>
+                    <a href="{{ path('lease_show', {id: lid}) }}">
+                        <i class="icon-list"></i>
+                    </a>
+                </li>
+            </ul>
+          </aside>
+        </header>
+        <div class="main">
+
+          <table class="body">
+              <thead>
+                  <tr>
+                      <th>N°</th>
+                      <th>Du</th>
+                      <th>Au</th>
+                      <th class="span1">Total</th>
+                      <th class="span1 text-center">Payé</th>
+                      <th class="span2 text-center">Etat / Actions</th>
+                  </tr>
+              </thead>
+              <tbody>
+              {% for entity in entities %}
+                  <tr>
+                      <td>{{ entity.number }}</td>
+                      <td>{% if entity.dateStart %}{{ entity.dateStart|printDate(1) }}{% endif %}</td>
+                      <td>{% if entity.dateEnd %}{{ entity.dateEnd|printDate(1) }}{% endif %}</td>
+                      <td class="text-right">{{ entity.total(false) }} €</td>
+                      <td class="text-center">{% if entity.total(true) == 0 %}<i class="icon-ok"></i>{% endif %}</td>
+                      <td class="text-center">
+                        <ul class="actions no-opacity">
+                          {% for itemTag in tags %}
+                          <li>
+                            {% for tag in entity.tags(itemTag) %}
+                            <a href="{{ path('quittance_tag_remove', {id: entity.id, tid: itemTag.id}) }}" title="{{ tag }}">
+                              <i class="icon-{{ tag.icon }}"></i>
+                            </a>
+                          {% else %}
+                            <a href="{{ path('quittance_tag_add', {id: entity.id, tid: itemTag.id}) }}" style="opacity: .5" title="{{ itemTag }}">
+                              <i class="icon-{{ itemTag.icon }} icon-white"></i>
+                            </a>
+                          {% endfor %}
+                          </li>
+                        {% endfor %}
+                        </ul>
+                        <ul class="actions">
+                          <li>
+                            <a href="{{ path('quittance_show', { 'id': entity.id }) }}"><i class="icon-eye-open"></i></a>
+                          </li>
+                        </ul>
+                      </td>
+                  </tr>
+                  <tr style="line-height: 1em; opacity: .25; font-size: .5em">
+                    <td></td>
+                    <td colspan="3" class="muted">
+                      {% for item in entity.items %}
+                      <div>
+                        {{ item.header }} <span class="pull-right">{{ item.price }} €</span>
+                      </div>
+                      {% endfor %}
+                    </td>
+                    <td colspan="3"></td>
+                  </tr>
+              {% endfor %}
+              </tbody>
+          </table>
+
+          {% set graph = [] %}
+          {% for entity in entities|reverse %}
+            {% set graph = graph|merge([entity.total(false)]) %}
+          {% endfor %}
+          <div class="text-center" style="padding: 1em">
+            <img src="https://chart.googleapis.com/chart?cht=lc&amp;chco=FF0000,00FF00,0000FF&amp;chs=500x100&amp;chd=t:{{ graph|join(',') }}&amp;chds=0,1000&amp;chxt=y&amp;chxl=0:||250€||500€||750€||1K€" />
+          </div>
+        </div>
+{% endblock %}

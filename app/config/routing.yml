@@ -1,3 +1,33 @@
+locator_account:
+    resource: "@LocatorAccountBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+locator_quittance:
+    resource: "@LocatorQuittanceBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+locator_main:
+    resource: "@LocatorMainBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+locator_house:
+    resource: "@LocatorHouseBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+locator_lease:
+    resource: "@LocatorLeaseBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+locator_contact:
+    resource: "@LocatorContactBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 
 # Internal routing configuration to handle ESI
 # ****** WARNING ******

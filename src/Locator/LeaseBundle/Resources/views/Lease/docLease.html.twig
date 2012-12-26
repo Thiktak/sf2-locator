@@ -1,0 +1,199 @@
+{% extends "::print.html.twig" %}
+
+{% block body %}
+        <!--<header>
+          <hgroup>
+            <h1>Lease</h1>
+            <h2>Document : lease</h2>
+          </hgroup>
+          <aside>
+            <ul>
+                <li>
+                    <a href="{{ path('lease_new') }}">
+                        <i class="icon-plus"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('lease') }}">
+                        <i class="icon-list"></i>
+                    </a>
+                </li>
+            </ul>
+          </aside>
+        </header>
+        <div class="main main-document" style="border-top: 10px solid black; background-color: lightblue">-->
+          <section class="container-fluid">
+            <h1>CONTRAT DE LOCATION</h1>
+            <h2>Loi N° 89462 du 6 Juillet 1989<br />Modifiée par la loi du 21 Juillet 1998, du 12 Décembre 2000.</h2>
+
+            <article>
+              <header>
+                <h1>Entre les sousignés</h1>
+              </header>
+              <div>
+                <p>
+                  <span class="data">Mr Olivarès André</span>, né le <span class="data">07/07/1945</span> à <span class="data">Saint-Venant (62350)</span>
+                  <br />
+                  OU<br />
+                  <span class="data">Mme Olivarès Patricia</span>, née le <span class="data">12/09/1962</span> à <span class="data">Haillicourt (62940)</span>
+                  <br />
+                  demeurant <span class="data">26, rue Jean Jaurès 62118 Biache-Saint-Vaast</span>
+                </p>
+                <p>
+                  tél : 03 21 55 50 85
+                </p>
+                <table class="w1">
+                  <tr>
+                    <td class="w1-3 uppercase strong">ci-après dénommé</td>
+                    <td class="w1-3 uppercase strong text-center"><u>le bailleur</u></td>
+                    <td class="w1-3 strong text-right">d'une part,</td>
+                  </tr>
+                </table>
+                {% set contacts = entity.contacts('tenant') %}
+                {% for contact in contacts %}
+                <br />
+                <p>
+                  ET
+                  <span class="data">{{ contact }}</span>, né le <span class="data">{{ contact.contact.birthday|printDate(1) }}</span> à <span class="data">{{ contact.contact.birthplace }}</span>
+                  demeurant <span class="data">{{ contact.place|default('INCONNU') }}</span>,
+                </p>
+                {% endfor %}
+
+                <table class="w1">
+                  <tr>
+                    <td class="w1-3 uppercase strong">ci-après dénommé</td>
+                    <td class="w1-3 uppercase strong text-center"><u>{{ contacts|length > 1 ? 'les loctaires' : 'le locataire' }}</u></td>
+                    <td class="w1-3 strong text-right">d'autre part.</td>
+                  </tr>
+                </table>
+              </div>
+            </article>
+
+            <p class="middle">Il a été arrêté et convenu ce qui suit, le bailleur louant les locaux et équipements ci après-désignés, au locataire qui les accepte aux conditions suivantes.</p>
+
+          </section>
+          <section class="container-fluid">
+
+            <article>
+              <header>
+                <h1>Désignation</h1>
+              </header>
+              <div>
+                <p>
+                  Maison individuelle sise au <span class="data">{{ entity.house.address }}</span>,
+                </p>
+
+                <dl class="dl-horizontal">
+                  <dt>Consistance des locaux</dt>
+                  <dd class="data">{{ entity.house.description }}</dd>
+
+                  <dt>Chauffage</dt>
+                  <dd class="data">Electrique</dd>
+                  
+                  <dt>Eau chaude</dt>
+                  <dd class="data">Individuelle (chauffe-eau électrique vertical)</dd>
+                  
+                  <dt>Equipements</dt>
+                  <dd class="data">Eléments cuisine haut et bas, évier avec robinetterie, hotte</dd>
+                </dl>
+
+
+                <div class="row-fluid text-center">
+                  <div class="span4">
+                    Surface habitable : <span class="data">{{ entity.house.surface }}</span> m<sup>2</sup>
+                  </div>
+                  <div class="span4">
+                    GES : <span class="data"></span>
+                  </div>
+                  <div class="span4">
+                    DPE : <span class="data"></span>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article>
+              <header>
+                <h1>Destination</h1>
+              </header>
+              <div>
+                <ul>
+                  <li><span class="data">HABITATION EXCLUSIVEMENT</span>,</li>
+                  <li style="text-decoration: line-through">HABITATION ET EXERCICE de la profession ....................................., sous réserve de l’obtention par le locataire des autorisations administratives nécessaires et celui-ci d’interdisant d’exercer dans les lieux une activité industrielle ou commerciale.</li>
+                </ul>
+              </div>
+            </article>
+
+            <article>
+              <header>
+                <h1>Durée</h1>
+              </header>
+              <div>
+                <p>
+                  Le présent contrat est consenti pour une durée de <u>3 ans</u>
+                  commençant à courir le <span class="data">{{ entity.dateStart|date('d/m/Y') }}</span> et se terminant le <span class="data">{{ entity.dateEnd|date('d/m/Y') }}</span>
+                  sous réserve de reconduction ou de renouvellement.
+                </p>
+              </div>
+            </article>
+
+          </section>
+          <section class="container-fluid">
+
+            <article>
+              <header>
+                <h1>Conditions particulières</h1>
+              </header>
+              <div>
+                <h1>Loyers et Charges</h1>
+                <p>
+                  Le loyer est payable mensuellement, au domicile du bailleur. Le montant du loyer initial est fixé à la somme de (<span class="data">600€</span>) <span class="data">Six cent Euros</span>.
+                  Le loyer sera automatiquement révisé le 1er Juillet de chaque année en tenant compte de l’indice des loyers (article 163, loi n° 2005-1719 du 30/12/2005).
+                </p>
+
+                <h1>Dépôt de Garantie</h1>
+                <p>
+                  Le dépôt de garantie est fixé à la somme de <span class="data">Six cent Euros</span> correspondant à <span class="data">1 mois</span> de loyer.
+                </p>
+
+                <h1>Clauses Particulières de Travaux</h1>
+                <p>
+                  Entretien des plates-bandes, du jardin et de la pelouse, du chauffe-eau électrique et des canalisations.<br />
+                  Entretien et nettoyage des appuis-fenêtres, portail, clôtures, garage,  trottoir, etc... .  <br />
+                  Les locataires ont pris connaissance et acceptent la proximité et l’environnement d’une basse cour.
+                </p>
+              </div>
+            </article>
+
+            <p>
+              En annexe du présent contrat les parties reconnaissent avoir reçu :
+            </p>
+            <ul style="margin-left: 2cm">
+              <li>un état des lieux dressé lors de la remise des clés,</li>
+              <li>un extrait du règlement de jouissance des lieux,</li>
+              <li>un diagnostic de performance énergétique,</li>
+              <li>2 jeux de clés.</li>
+            </ul>
+
+            <br />
+
+            <p class="text-right">
+              Fait à Biache-Saint-Vaast, le <span class="data">xx/xx/xx</span><br />
+              en 2 originaux dont un pour chaque signataire. 
+            </p>
+
+            <br />
+            <table class="w1">
+              <tr>
+                <td class="w1-3 uppercase strong text-center">Le bailleur</td>
+                <td class="w1-3 uppercase strong text-center">Le(s) locataire(s)</td>
+              </tr>
+            </table>
+          </section>
+        <!--</div>-->
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+    </style>
+{% endblock %}
